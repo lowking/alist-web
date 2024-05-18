@@ -142,7 +142,8 @@
     "select_with_mouse_options": {
       "disabled": "Disabled",
       "open_item_with_dblclick": "Open item with double click"
-    }
+    },
+    "context_menu_default_player": "Set a default player of context menu"
   },
   "package_download": {
     "current_status": "Current Status",
