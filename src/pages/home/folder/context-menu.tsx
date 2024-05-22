@@ -68,21 +68,6 @@ export const ContextMenu = () => {
           </HStack>
         </Item>
       </Show>
-      <For each={["rename", "move", "copy", "delete"]}>
-        {(name) => (
-          <Item
-            hidden={() => {
-              const index = UserPermissions.findIndex((item) => item === name)
-              return !UserMethods.can(me(), index)
-            }}
-            onClick={() => {
-              bus.emit("tool", name)
-            }}
-          >
-            <ItemContent name={name} />
-          </Item>
-        )}
-      </For>
       <Show when={oneChecked()}>
         <Item
           onClick={({ props }) => {
@@ -151,8 +136,13 @@ export const ContextMenu = () => {
           </For>
         </Submenu>
       </Show>
-      <Show when={!oneChecked() && haveSelected()}>
-        <Submenu label={<ItemContent name="copy_link" />}>
+      <Show when={haveSelected()}>
+        <Submenu
+          label={<ItemContent name="copy_link" />}
+          hidden={() => {
+            return oneChecked()
+          }}
+        >
           <Item onClick={copySelectedPreviewPage}>
             {t("home.toolbar.preview_page")}
           </Item>
@@ -182,6 +172,21 @@ export const ContextMenu = () => {
           <Item onClick={sendToAria2}>{t("home.toolbar.send_aria2")}</Item>
         </Submenu>
       </Show>
+      <For each={["rename", "move", "copy", "delete"]}>
+        {(name) => (
+          <Item
+            hidden={() => {
+              const index = UserPermissions.findIndex((item) => item === name)
+              return !UserMethods.can(me(), index)
+            }}
+            onClick={() => {
+              bus.emit("tool", name)
+            }}
+          >
+            <ItemContent name={name} />
+          </Item>
+        )}
+      </For>
     </Menu>
   )
 }
